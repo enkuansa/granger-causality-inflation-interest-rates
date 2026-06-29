@@ -1,5 +1,5 @@
 *Granger Causality Study
-* import fred CPIAUCSL FEDFUNDS, aggregate(monthly,eop) clear
+import fred CPIAUCSL FEDFUNDS, aggregate(monthly,eop) clear
 
 // Clean out the data
 drop if missing(FEDFUNDS)|missing(CPIAUCSL)
@@ -8,12 +8,15 @@ format time %tm
 tsset time
 
 //test for stationarity
-dfuller inflation
+dfuller CPIAUCSL
 dfuller FEDFUNDS
 
 // Define the varibales. Note that these are monthly datasets, not yearly ones
 gen inflation = ((CPIAUCSL-L.CPIAUCSL)/(L.CPIAUCSL))*100
 gen interest_rate = D.FEDFUNDS
+
+// Test for stationarity for new variables
+dfuller inflation
 dfuller interest_rate
 
 
